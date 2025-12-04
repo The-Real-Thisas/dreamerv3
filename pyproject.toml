@@ -1,0 +1,49 @@
+[project]
+name = "dreamer"
+version = "3.3.1"
+description = "Mastering Diverse Domains through World Models"
+authors = [
+    { name = "Danijar Hafner", email = "mail@danijar.com" }
+]
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+license = { text = "MIT" }
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "ale_py==0.9.0",
+    "autorom[accept-rom-license]==0.6.1",
+    "av",
+    "chex",
+    "colored_traceback",
+    "einops",
+    "elements>=3.19.1",
+    "google-resumable-media>=2.7.2",
+    "granular>=0.20.3",
+    "ipdb",
+    "jax==0.4.33",
+    "jaxtyping",
+    "gymnasium",
+    "ninjax>=3.5.1",
+    "numpy<2",
+    "optax",
+    "portal>=3.5.0",
+    "scope>=0.4.4",
+    "tqdm",
+]
+
+[project.urls]
+Homepage = "http://github.com/danijar/dreamerv3"
+
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["dreamerv3", "embodied"]
+include-package-data = true

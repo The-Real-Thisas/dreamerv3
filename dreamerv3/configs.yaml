@@ -175,6 +175,11 @@ crafter:
   task: crafter_reward
   run: {steps: 1.1e6, envs: 1, train_ratio: 512}
 
+cartpole:
+  <<: *size1m
+  task: gym_CartPole-v1
+  run: {steps: 5e5, envs: 4, train_ratio: 512}
+
 dmc_proprio:
   <<: *size1m
   task: dmc_walker_walk
