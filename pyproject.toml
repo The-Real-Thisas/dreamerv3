@@ -40,6 +40,12 @@ dependencies = [
 [project.urls]
 Homepage = "http://github.com/danijar/dreamerv3"
 
+[project.optional-dependencies]
+cuda = [
+    "jax[cuda12]==0.4.33",
+    "nvidia-cuda-nvcc-cu12<=12.2",
+]
+
 [build-system]
 requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
