@@ -698,7 +698,7 @@ class DreamerQuadEnv(embodied.Env):
     @property
     def obs_space(self):
         return {
-            'image': elements.Space(np.uint8, (64, 64)),
+            'image': elements.Space(np.uint8, (64, 64, 1)),
             'state': elements.Space(np.float32, (self._state_dim,)),
             'reward': elements.Space(np.float32),
             'is_first': elements.Space(bool),
@@ -725,7 +725,8 @@ class DreamerQuadEnv(embodied.Env):
         seg_pixels = self.renderer.render()
         seg_ids = seg_pixels[:, :, 0].astype(np.int32) - 1
         gate_mask = np.isin(seg_ids, list(self.gate_geom_ids))
-        return gate_mask.astype(np.uint8) * 255
+        # Add channel dimension for DreamerV3 (64, 64) -> (64, 64, 1)
+        return (gate_mask.astype(np.uint8) * 255)[:, :, None]
 
     def _obs(self, image, state, reward, is_first=False, is_last=False, is_terminal=False):
         return {
