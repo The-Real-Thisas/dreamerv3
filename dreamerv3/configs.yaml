@@ -35,6 +35,7 @@ defaults:
     minecraft: {size: [64, 64], break_speed: 100.0, logs: False, length: 36000}
     dmc: {size: [64, 64], repeat: 1, proprio: True, image: True, camera: -1}
     loconav: {size: [64, 64], repeat: 1, camera: -1}
+    skydreamer: {size: [64, 64]}
 
   replay:
     size: 5e6
@@ -179,6 +180,11 @@ cartpole:
   <<: *size1m
   task: gym_CartPole-v1
   run: {steps: 5e5, envs: 4, train_ratio: 512}
+
+skydreamer:
+  <<: *size12m
+  task: skydreamer_quad
+  run: {steps: 1e7, envs: 8, train_ratio: 512}
 
 dmc_proprio:
   <<: *size1m

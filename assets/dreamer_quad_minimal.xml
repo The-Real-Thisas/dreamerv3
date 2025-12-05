@@ -1,0 +1,105 @@
+<!--
+Minimal MuJoCo model for DreamerQuadEnv
+- No textures/materials (binary segmentation only)
+- No drone body visualization (just camera)
+- Optimized for fast offscreen rendering
+- Static A2RL track configuration
+- Verified gate positions and orientations from gate_rot_physics
+-->
+<mujoco model="dreamer_quad_minimal">
+    <compiler angle="radian" meshdir="." />
+
+    <visual>
+        <headlight ambient="1 1 1"/>
+        <global offwidth="64" offheight="64"/>
+    </visual>
+
+    <asset>
+        <!-- Gate meshes (no textures for binary segmentation) -->
+        <mesh name="single_gate_mesh_0" file="models/a2rl_single_gate/a2rl_single_gate_0.obj"/>
+        <mesh name="single_gate_mesh_1" file="models/a2rl_single_gate/a2rl_single_gate_1.obj"/>
+        <mesh name="double_gate_mesh_0" file="models/a2rl_double_gate/a2rl_double_gate_0.obj"/>
+        <mesh name="double_gate_mesh_1" file="models/a2rl_double_gate/a2rl_double_gate_1.obj"/>
+    </asset>
+
+    <worldbody>
+        <!-- Minimal camera body (just for positioning, no visual geometry) -->
+        <body name="camera" pos="0 0 1">
+            <freejoint/>
+            <!-- Minimal mass for MuJoCo physics (required for freejoint) -->
+            <inertial pos="0 0 0" mass="0.01" diaginertia="0.001 0.001 0.001"/>
+            <!-- FPV Camera matching quad_race_env.py defaults:
+                 offset: [-0.02, 0, 0.05], pitch: 40°
+                 fovy: 104° (matches intrinsic matrix f=25 for 64x64, per SkyDreamer paper) -->
+            <camera name="fpv" pos="-0.02 0 0.05" xyaxes="0 -1 0 -0.643 0 0.766" fovy="104" mode="fixed"/>
+        </body>
+
+        <!-- SINGLE GATES -->
+        <!-- Gate 0: [12.5, 2, 1.25], yaw=180° -->
+        <body name="gate_0" pos="12.5 2 1.25" quat="0.0 0.0 0.0 1.0">
+            <geom name="gate_mesh_0_0" type="mesh" mesh="single_gate_mesh_1" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+            <geom name="gate_mesh_0_1" type="mesh" mesh="single_gate_mesh_0" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+        </body>
+
+        <!-- Gate 1: [6.5, 6, 1.25], yaw=135° -->
+        <body name="gate_1" pos="6.5 6 1.25" quat="0.38268343 0.0 0.0 0.92387953">
+            <geom name="gate_mesh_1_0" type="mesh" mesh="single_gate_mesh_0" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+            <geom name="gate_mesh_1_1" type="mesh" mesh="single_gate_mesh_1" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+        </body>
+
+        <!-- Gate 2: [5.5, 14, 1.25], yaw=120° -->
+        <body name="gate_2" pos="5.5 14 1.25" quat="0.5 0.0 0.0 0.8660254">
+            <geom name="gate_mesh_2_0" type="mesh" mesh="single_gate_mesh_0" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+            <geom name="gate_mesh_2_1" type="mesh" mesh="single_gate_mesh_1" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+        </body>
+
+        <!-- Gate 3: [2.5, 24, 1.25], yaw=90° -->
+        <body name="gate_3" pos="2.5 24 1.25" quat="0.70710678 0.0 0.0 0.70710678">
+            <geom name="gate_mesh_3_0" type="mesh" mesh="single_gate_mesh_0" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+            <geom name="gate_mesh_3_1" type="mesh" mesh="single_gate_mesh_1" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+        </body>
+
+        <!-- Gate 4: [7.5, 30, 1.25], yaw=350° -->
+        <body name="gate_4" pos="7.5 30 1.25" quat="-0.99619470 0.0 0.0 0.08715574">
+            <geom name="gate_mesh_4_0" type="mesh" mesh="single_gate_mesh_0" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+            <geom name="gate_mesh_4_1" type="mesh" mesh="single_gate_mesh_1" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+        </body>
+
+        <!-- Gate 5: [12.2, 22, 1.25], yaw=0° -->
+        <body name="gate_5" pos="12.2 22 1.25" quat="1.0 0.0 0.0 0.0">
+            <geom name="gate_mesh_5_0" type="mesh" mesh="single_gate_mesh_0" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+            <geom name="gate_mesh_5_1" type="mesh" mesh="single_gate_mesh_1" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+        </body>
+
+        <!-- DOUBLE GATES -->
+        <!-- Double gate 6&7: [17.5, 30], avg_z=2.6, base_yaw=260°, adjusted_yaw=260°+90°=350° -->
+        <body name="gate_6" pos="17.5 30 2.6" quat="-0.99619470 0.0 0.0 0.08715574">
+            <geom name="gate_mesh_6_0" type="mesh" mesh="double_gate_mesh_0" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+            <geom name="gate_mesh_6_1" type="mesh" mesh="double_gate_mesh_1" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+        </body>
+
+        <!-- Gate 8: [18.5, 22, 1.25], yaw=80° -->
+        <body name="gate_8" pos="18.5 22 1.25" quat="0.76604444 0.0 0.0 0.64278761">
+            <geom name="gate_mesh_8_0" type="mesh" mesh="single_gate_mesh_0" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+            <geom name="gate_mesh_8_1" type="mesh" mesh="single_gate_mesh_1" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+        </body>
+
+        <!-- Gate 9: [20.5, 14, 1.25], yaw=260° -->
+        <body name="gate_9" pos="20.5 14 1.25" quat="-0.64278761 0.0 0.0 0.76604444">
+            <geom name="gate_mesh_9_0" type="mesh" mesh="single_gate_mesh_0" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+            <geom name="gate_mesh_9_1" type="mesh" mesh="single_gate_mesh_1" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+        </body>
+
+        <!-- Double gate 10&12: [18.5, 6], avg_z=2.6, base_yaw=225°, adjusted_yaw=225°+90°=315° -->
+        <body name="gate_10" pos="18.5 6 2.6" quat="-0.92387953 0.0 0.0 0.38268343">
+            <geom name="gate_mesh_10_0" type="mesh" mesh="double_gate_mesh_0" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+            <geom name="gate_mesh_10_1" type="mesh" mesh="double_gate_mesh_1" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+        </body>
+
+        <!-- Gate 11: [20, 4.5, 1.9], yaw=45° -->
+        <body name="gate_11" pos="20 4.5 1.9" quat="0.92387953 0.0 0.0 0.38268343">
+            <geom name="gate_mesh_11_0" type="mesh" mesh="single_gate_mesh_0" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+            <geom name="gate_mesh_11_1" type="mesh" mesh="single_gate_mesh_1" contype="0" conaffinity="0" rgba="1 0 0 1"/>
+        </body>
+    </worldbody>
+</mujoco>
