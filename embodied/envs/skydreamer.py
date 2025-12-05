@@ -405,20 +405,20 @@ def compute_step_logic_jit(pos_old, pos_new, new_states, actions, prev_actions,
 
         if new_states[i, 2] < z_min:
             ground_collision[i] = True
-            rewards[i] = -10.0
+            rewards[i] = 0.0
 
         if new_states[i, 0] < x_min or new_states[i, 0] > x_max:
             out_of_bounds[i] = True
-            rewards[i] = -10.0
+            rewards[i] = 0.0
         if new_states[i, 1] < y_min or new_states[i, 1] > y_max:
             out_of_bounds[i] = True
-            rewards[i] = -10.0
+            rewards[i] = 0.0
         if new_states[i, 2] > z_max:
             out_of_bounds[i] = True
-            rewards[i] = -10.0
+            rewards[i] = 0.0
         if (abs(new_states[i, 10]) > 1000 or abs(new_states[i, 11]) > 1000 or abs(new_states[i, 12]) > 1000):
             out_of_bounds[i] = True
-            rewards[i] = -10.0
+            rewards[i] = 0.0
 
         if not disable_max_steps and step_counts[i] >= max_steps:
             max_steps_reached[i] = True
@@ -518,7 +518,8 @@ class Quadcopter3DGates:
     def reset_(self, dones):
         num_reset = dones.sum()
 
-        self.target_gates[dones] = np.zeros(num_reset, dtype=int)
+        # Random gate initialization: uniformly sample from all gates (0 to num_gates-1)
+        self.target_gates[dones] = np.random.randint(0, self.num_gates, size=num_reset)
 
         x0 = np.full(num_reset, self.start_pos[0])
         y0 = np.full(num_reset, self.start_pos[1])
