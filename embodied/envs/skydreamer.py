@@ -17,11 +17,16 @@ Observation space:
 
 import os
 import numpy as np
-import mujoco
 from numba import njit
 import elements
 import embodied
 from gymnasium import spaces
+
+# Configure MuJoCo for headless rendering (must be set before importing mujoco)
+if 'MUJOCO_GL' not in os.environ:
+    os.environ['MUJOCO_GL'] = 'egl'
+
+import mujoco
 
 
 # ============================================================================
@@ -671,7 +676,7 @@ class DreamerQuadEnv(embodied.Env):
             seed=seed
         )
 
-        # Load MuJoCo model for rendering
+        # Load MuJoCo model for rendering (EGL configured at module level for headless)
         xml_path = os.path.join(os.path.dirname(__file__), '..', '..', 'assets', 'dreamer_quad_minimal.xml')
         self.mj_model = mujoco.MjModel.from_xml_path(xml_path)
         self.mj_data = mujoco.MjData(self.mj_model)
