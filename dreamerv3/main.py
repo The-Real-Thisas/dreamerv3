@@ -211,27 +211,9 @@ def make_replay(config, folder, mode='train'):
 
 def make_env(config, index, **overrides):
   suite, task = config.task.split('_', 1)
-  if suite == 'memmaze':
-    from embodied.envs import from_gym
-    import memory_maze  # noqa
   ctor = {
       'dummy': 'embodied.envs.dummy:Dummy',
-      'gym': 'embodied.envs.from_gym:FromGym',
-      'dm': 'embodied.envs.from_dmenv:FromDM',
-      'crafter': 'embodied.envs.crafter:Crafter',
-      'dmc': 'embodied.envs.dmc:DMC',
-      'atari': 'embodied.envs.atari:Atari',
-      'atari100k': 'embodied.envs.atari:Atari',
-      'dmlab': 'embodied.envs.dmlab:DMLab',
-      'minecraft': 'embodied.envs.minecraft:Minecraft',
-      'loconav': 'embodied.envs.loconav:LocoNav',
-      'pinpad': 'embodied.envs.pinpad:PinPad',
-      'langroom': 'embodied.envs.langroom:LangRoom',
-      'procgen': 'embodied.envs.procgen:ProcGen',
-      'bsuite': 'embodied.envs.bsuite:BSuite',
       'skydreamer': 'embodied.envs.skydreamer:DreamerQuadEnv',
-      'memmaze': lambda task, **kw: from_gym.FromGym(
-          f'MemoryMaze-{task}-v0', **kw),
   }[suite]
   if isinstance(ctor, str):
     module, cls = ctor.split(':')
